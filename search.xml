@@ -5,6 +5,19 @@
     
     <entry>
       <title></title>
+      <link href="/2023/02/28/test_typora+picgo/"/>
+      <url>/2023/02/28/test_typora+picgo/</url>
+      
+        <content type="html"><![CDATA[<h1>测试使用Typora+PicGo</h1><p>你好，以下是用于测试在Hexo上传文章，文章中的图片如何也可以上传到github中</p><p>为了解决这个问题，本文采用Typora+PicGo方案，将图片利用PicGo上传GitHub图床。</p><p><img src="https://raw.githubusercontent.com/hugh-98/PicGo/main/img/202302280945413.png" alt="image-20230228094346351"></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
       <link href="/2023/02/27/test%20front%20matter/"/>
       <url>/2023/02/27/test%20front%20matter/</url>
       

@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>Hexo博客教程(三)图片存储</title>
+      <link href="/2023/03/06/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B-%E4%B8%89-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/"/>
+      <url>/2023/03/06/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B-%E4%B8%89-%E5%9B%BE%E7%89%87%E5%AD%98%E5%82%A8/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言">前言</h2><p>在Hexo博客远程发布时，如何存储并显示文章中的图片是一个问题。本文使用GitHub+PicGo来存储并显示图片，并使用Typora来写博客。</p><h2 id="环境安装">环境安装</h2><h3 id="安装Git">安装Git</h3><p>安装Git后还需要绑定自己的GitHub账号，可参考<a href="https://hugh-98.github.io/2023/03/05/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B%E4%B8%80/">这篇博客</a></p><h3 id="安装PicGo">安装PicGo</h3><p>GitHub地址：<a href="https://github.com/Molunerfinn/PicGo">https://github.com/Molunerfinn/PicGo</a></p><p>安装较为简单，直接略过了</p><h3 id="安装Typora">安装Typora</h3><p><a href="https://typoraio.cn/">官网</a>现在的版本需要购买。也可以在网上找0.x的版本，免费。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 教程 </category>
+          
+          <category> Hexo </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> GitHub </tag>
+            
+            <tag> PicGo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hexo博客教程(二)Hexo主题推荐</title>
       <link href="/2023/03/06/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B%E4%BA%8C/"/>
       <url>/2023/03/06/Hexo%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B%E4%BA%8C/</url>

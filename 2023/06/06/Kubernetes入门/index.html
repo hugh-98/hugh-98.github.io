@@ -1,0 +1,746 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Kubernetes入门（k8s） | Hugh的个人博客</title><meta name="author" content="Hugh"><meta name="copyright" content="Hugh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="参考视频：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1GT4y1A756 需掌握的前置知识：  Linux Docker  k8s简介 k8s基本介绍 kubernetes，简称K8s，是用8代替8个字符“ubernete”而成的缩写。是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效(powerful)，Ku">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes入门（k8s）">
+<meta property="og:url" content="https://hugh-98.github.io/2023/06/06/Kubernetes%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Hugh的个人博客">
+<meta property="og:description" content="参考视频：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1GT4y1A756 需掌握的前置知识：  Linux Docker  k8s简介 k8s基本介绍 kubernetes，简称K8s，是用8代替8个字符“ubernete”而成的缩写。是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效(powerful)，Ku">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hugh-98.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2023-06-06T12:22:30.000Z">
+<meta property="article:modified_time" content="2023-06-15T04:18:05.668Z">
+<meta property="article:author" content="Hugh">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hugh-98.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://hugh-98.github.io/2023/06/06/Kubernetes%E5%85%A5%E9%97%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?75e27ce1a302654cd332f061e9a5e29b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Hugh","link":"链接: ","source":"来源: Hugh的个人博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Kubernetes入门（k8s）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-15 12:18:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/romantic/index.html"><i class="fa-fw far fa-file-code"></i><span> 浪漫</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/default.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Hugh的个人博客"><span class="site-name">Hugh的个人博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/romantic/index.html"><i class="fa-fw far fa-file-code"></i><span> 浪漫</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Kubernetes入门（k8s）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-06T12:22:30.000Z" title="发表于 2023-06-06 20:22:30">2023-06-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-06-15T04:18:05.668Z" title="更新于 2023-06-15 12:18:05">2023-06-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/k8s/">k8s</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Kubernetes入门（k8s）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1GT4y1A756">https://www.bilibili.com/video/BV1GT4y1A756</a></p>
+<p>需掌握的前置知识：</p>
+<ul>
+<li>Linux</li>
+<li>Docker</li>
+</ul>
+<h2 id="k8s简介">k8s简介</h2>
+<h3 id="k8s基本介绍">k8s基本介绍</h3>
+<p>kubernetes，简称K8s，是用8代替8个字符“ubernete”而成的缩写。是一个开源的，用于管理云平台中多个主机上的容器化的应用，<strong>Kubernetes的目标是让部署容器化的应用简单并且高效(powerful)</strong>，Kubernetes提供了应用部署，规划，更新，维护的一种机制。</p>
+<p><strong>传统的应用部署方式是通过插件或脚本来安装应用</strong>。这样做的缺点是应用的运行、配置、管理、所有生存周期将与当前操作系统绑定，这样做并不利于应用的升级更新/回滚等操作，当然也可以通过创建虚拟机的方式来实现某些功能，但是虚拟机非常重，并不利于可移植性。</p>
+<p><strong>新的方式是通过部署容器方式实现</strong>，每个容器之间互相隔离，每个容器有自己的文件系统，容器之间进程不会相互影响，能区分计算资源。相对于虚拟机，容器能快速部署，由于容器与底层设施、机器文件系统解耦的，所以它能在不同云、不同版本操作系统间进行迁移。</p>
+<p>容器占用资源少、部署快，每个应用可以被打包成一个容器镜像，每个应用与容器间成一对一关系也使容器有更大优势，使用容器可以在build或release的阶段，为应用创建容器镜像，因为每个应用不需要与其余的应用堆栈组合，也不依赖于生产环境基础结构，这使得从研发到测试、生产能提供一致环境。类似地，容器比虚拟机轻量、更“透明”，这更便于监控和管理。</p>
+<p><strong>Kubernetes是Google开源的一个容器编排引擎，它支持自动化部署、大规模可伸缩、应用容器化管理</strong>。在生产环境中部署一个应用程序时，通常要部署该应用的多个实例以便对应用请求进行负载均衡。</p>
+<p>在Kubernetes中，我们可以创建多个容器，每个容器里面运行一个应用实例，然后通过内置的负载均衡策略，实现对这一组应用实例的管理、发现、访问，而这些细节都不需要运维人员去进行复杂的手工配置和处理。</p>
+<h3 id="k8s功能和架构">k8s功能和架构</h3>
+<p>Kubernetes是一个轻便的和可扩展的开源平台，用于管理容器化应用和服务。通过Kubernetes能够进行应用的自动化部署和扩缩容。在Kubernetes中，会将组成应用的容器组合成一个逻辑单元以更易管理和发现。Kubernetes积累了作为Google生产环境运行工作负载15年的经验，并吸收了来自于社区的最佳想法和实践。</p>
+<ol>
+<li>k8s功能：</li>
+</ol>
+<ul>
+<li>
+<p><strong>自动装箱</strong>：基于容器对应用运行环境的资源配置要求自动部署应用容器</p>
+</li>
+<li>
+<p><strong>自我修复（自愈能力）</strong>：</p>
+<ul>
+<li>当容器失败时，会对容器进行重启</li>
+<li>当所部署的Node节点有问题时，会对容器进行重新部署和重新调度</li>
+<li>当容器未通过监控检查时，会关闭此容器直到容器正常运行时，才会对外提供服务</li>
+</ul>
+</li>
+<li>
+<p><strong>水平扩展</strong>：通过简单的命令、用户UI界面或基于CPU等资源使用情况，对应用容器进行规模扩大或规模剪裁</p>
+</li>
+<li>
+<p><strong>服务发现与负载均衡</strong>：用户不需使用额外的服务发现机制，就能够基于Kubernetes自身能力实现服务发现和负载均衡</p>
+</li>
+<li>
+<p><strong>滚动更新</strong>：可以根据应用的变化，对应用容器运行的应用，进行一次性或批量式更新</p>
+</li>
+<li>
+<p><strong>版本回退</strong>：可以根据应用部署情况，对应用容器运行的应用，进行历史版本即时回退</p>
+</li>
+<li>
+<p><strong>密钥和配置管理</strong>：在不需要重新构建镜像的情况下，可以部署和更新密钥和应用配置，类似热部署。</p>
+</li>
+<li>
+<p><strong>存储编排</strong>：自动实现存储系统挂载及应用，特别对有状态应用实现数据持久化非常重要存储系统可以来自于本地目录、网络存储NFS、Gluster、Ceph等）、公共云存储服务</p>
+</li>
+<li>
+<p><strong>批处理</strong>：提供一次性任务，定时任务；满足批量数据处理和分析的场景</p>
+</li>
+</ul>
+<ol start="2">
+<li>应用部署架构分类</li>
+</ol>
+<ul>
+<li>无中心节点架构：GlusterFS</li>
+<li>有中心节点架构：HDFS、K8S</li>
+</ul>
+<ol start="3">
+<li>k8s集群架构</li>
+</ol>
+<p>下图是k8s的架构图（来源于k8s官网）</p>
+<p><img src="F:%5Cmyblog%5Cimages%5Ccomponents-of-kubernetes.svg" alt="k8s架构图"></p>
+<p>从中可以看到一个K8S集群整体上由两个部分组成：<strong>Control Plane（控制平面）和 Node（节点）</strong></p>
+<p>其中，Control Plane也被称为<strong>Master Node（主节点）</strong>，而其他的Node节点也被称为<strong>Worker Node（工作节点）</strong>。</p>
+<ul>
+<li>
+<p>Master Node：</p>
+<ul>
+<li>控制平面组件会为集群做出全局决策，比如资源的调度。 以及检测和响应集群事件，例如当不满足部署的 replicas 字段时， 要启动新的 pod）。</li>
+<li>控制平面组件可以在集群中的任何节点上运行。 然而，为了简单起见，设置脚本通常会在同一个计算机上启动所有控制平面组件， 并且不会在此计算机上运行用户容器。</li>
+<li>Master Node主要包括以下部分：<code>kube-apiserver</code>（API Server）、<code>etcd</code>、<code>kube-scheduler</code>、<code>kube-controller-manager</code>、<code>cloud-controller-manager</code></li>
+</ul>
+</li>
+<li>
+<p>Master内的组件</p>
+<ul>
+<li><code>kube-apiserver</code>：API server 组件<strong>负责公开了 Kubernetes API，负责处理接受请求的工作</strong>，<strong>提供了资源操作的唯一入口，并提供认证、授权、访问控制、相关等机制</strong>。所有请求都是restful风格。数据存储会交给etcd。</li>
+<li><code>etcd</code>：一致且高度可用的键值存储，用作 Kubernetes 的所有集群数据的后台数据库，<strong>主要是保存了整个集群的状态。etcd 采用分布式、容错设计，被视为集群的最终事实来源。</strong></li>
+<li><code>kube-scheduler</code>：kube-scheduler 是 负责监视新创建的、未指定运行节点（node）的 Pods， 并<strong>调度节点来让 Pod 在指定的机器上面运行</strong>。</li>
+<li><code>kube-controller-manager</code>：<strong>kube-controller-manager 负责运行控制器进程。负责维护集群的状态，比如故障检测、自动扩展、滚动更新等。</strong> 从逻辑上讲， 每个控制器都是一个单独的进程， 但是为了降低复杂性，它们都被编译到同一个可执行文件，并在同一个进程中运行。</li>
+<li><code>cloud-controller-manager</code>：这个组件和云平台有关系，不需要太多关心。 一个 Kubernetes 控制平面组件， 嵌入了特定于云平台的控制逻辑。 云控制器管理器（Cloud Controller Manager）允许你将你的集群连接到云提供商的 API 之上， 并将与该云平台交互的组件同与你的集群交互的组件分离开来。 cloud-controller-manager 仅运行特定于云平台的控制器。 因此如果你在自己的环境中运行 Kubernetes，或者在本地计算机中运行学习环境， 所部署的集群不需要有云控制器管理器。</li>
+</ul>
+</li>
+<li>
+<p>Worker Node：负责处理真正的业务需求的节点。包括：<code>kubelet</code>、<code>kube-proxy</code>、<code>Container Runtime</code></p>
+</li>
+<li>
+<p>Worker Node内的组件：</p>
+<ul>
+<li>
+<p><code>kubelet</code>：<strong>这是一个与控制平面通信的微型应用。kubelet 可确保容器在容器集内运行。当控制平面需要在节点中执行某个操作时，kubelet 就会执行该操作。</strong></p>
+</li>
+<li>
+<p><code>kube-proxy</code>：</p>
+<ul>
+<li>kube-proxy 是集群中每个节点（node）所上运行的网络代理， 实现 Kubernetes 服务（Service） 概念的一部分。</li>
+<li>kube-proxy 维护节点上的一些网络规则， 这些网络规则会允许从集群内部或外部的网络会话与 Pod 进行网络通信。</li>
+<li>如果操作系统提供了可用的数据包过滤层，则 kube-proxy 会通过它来实现网络规则。 否则，kube-proxy 仅做流量转发。</li>
+</ul>
+</li>
+<li>
+<p><code>Container Runtime</code>（容器运行时）：**容器运行环境是负责运行容器的软件。**默认的容器运行时为 <code>Docker</code>；其他还有<code>containerd</code>、 <code>CRI-O</code> 以及 Kubernetes CRI (Container Runtime Interface，容器运行环境接口) 的其他任何实现</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="k8s中的核心概念">k8s中的核心概念</h3>
+<ol>
+<li><strong>Pod</strong></li>
+</ol>
+<ul>
+<li>Pod 是可以在k8s中创建和管理的、<strong>最小的可部署</strong>的计算单元。</li>
+<li>Pod是一组（一个或多个）容器的集合，具有共享的存储和网络资源，以及如何运行容器的规范。</li>
+<li>Pod的生命周期是短暂的</li>
+<li>一个 Pod 可以视为容器化环境的应用层 Logical Host（逻辑宿主机）</li>
+</ul>
+<p>例如，下图是一个Pod容器</p>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230607102127724.png" alt="image-20230607102127724"></p>
+<ol start="2">
+<li><strong>controller</strong></li>
+</ol>
+<p>作用：</p>
+<ul>
+<li>确保预期的pod副本数量</li>
+</ul>
+<blockquote>
+<ul>
+<li>无状态部署（Deployment）：Deployment 是一组 Pod 的抽象，Deployment用于部署无状态的服务，通过 Deployment 控制器保障用户指定数量的容器副本正常运行，并且实现了滚动更新等高级功能，当我们需要更新业务版本时，Deployment 会按照我们指定策略自动的杀死旧版本的 Pod 并且启动新版本的 Pod。</li>
+<li>有状态部署（StatefulSet）：StatefulSet本质上是Deployment的一种变体用于部署有状态的服务，它所管理的Pod拥有固定的Pod名称，启停顺序，在StatefulSet中，Pod名字称为网络标识(hostname)，还必须要用到共享存储。</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>可以确保所有的node运行同一个pod</p>
+</li>
+<li>
+<p>支持一次性任务和定时任务</p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>Service</strong></li>
+</ol>
+<ul>
+<li>
+<p>Service是定义一组pod的访问规则</p>
+</li>
+<li>
+<p>一个 Service 可以视为是一组提供相同服务的 Pod 的对外访问接口，k8s 支持两种对外提供服务的 Service 的 type 的定义：</p>
+<ul>
+<li>NodePort：在定义 Service 时指定<code>spec.type=NodePort</code>并指定<code>spec.ports.nodePort</code>的值，系统就会在 K8s 集群中的每个 Node 上打开 一个主机上的真实端口号，这个端口号可以帮助访问 Node 的客户端访问到内部的 Service；</li>
+<li>LoadBalancer：如果云服务商支持外接负载均衡器，则可以通过<code>spec.type=LoadBalancer</code>定义 Service，并指定负载均衡器的 IP 地址。</li>
+</ul>
+</li>
+</ul>
+<h2 id="k8s集群搭建">k8s集群搭建</h2>
+<h3 id="搭建k8s环境的平台规划">搭建k8s环境的平台规划</h3>
+<ol>
+<li>搭建集群可以分为：</li>
+</ol>
+<ul>
+<li>单master集群：即，一个master节点，多个node节点</li>
+<li>多master集群：即，多个master节点，多个node节点</li>
+</ul>
+<ol start="2">
+<li>硬件要求：</li>
+</ol>
+<ul>
+<li>master节点：最少 2核CPU、4G内存、20G硬盘</li>
+<li>node节点：最少4核CPU、8G内存、40G硬盘</li>
+</ul>
+<ol start="3">
+<li>前置知识：</li>
+</ol>
+<p>目前生产部署 kubernetes 主要有以下方式：</p>
+<ul>
+<li>
+<p>minikube：一个用于快速搭建单节点的kubernetes工具。</p>
+</li>
+<li>
+<p>kubeadm：一个用于快速搭建kubernetes集群的工具。</p>
+</li>
+<li>
+<p>二进制包：从官网上下载每个组件的二进制包依次安装，此方式对于理解kubernetes组件更加有效。</p>
+</li>
+</ul>
+<h3 id="kubeadm搭建k8s集群">kubeadm搭建k8s集群</h3>
+<p>kubeadm 是官方社区推出的一个用于快速部署 kubernetes 集群的工具，这个工具能通过两条指令完成一个kubernetes 集群的部署：</p>
+<ul>
+<li>第一、创建一个 Master 节点 <code>kubeadm init</code></li>
+<li>第二，将Node节点加入到当前集群中 <code>$kubeadm join &lt;Master节点的IP和端口&gt;</code></li>
+</ul>
+<p>安装kubeadm官网教程：<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/">https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/</a></p>
+<p>利用kubeadm搭建集群的官网教程：<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/">https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/</a></p>
+<p>参考搭建教程：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44214446/article/details/128531430">https://blog.csdn.net/qq_44214446/article/details/128531430</a></p>
+<h4 id="环境准备">环境准备</h4>
+<ol>
+<li>准备三台虚拟机（系统: centos7.9）</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>IP地址</th>
+<th>hostname</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master</td>
+<td>192.168.179.131</td>
+<td>k8s-master</td>
+</tr>
+<tr>
+<td>Node1</td>
+<td>192.168.179.132</td>
+<td>k8s-node1</td>
+</tr>
+<tr>
+<td>Node2</td>
+<td>192.168.179.133</td>
+<td>k8s-node2</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>安装要求</li>
+</ol>
+<p>在开始之前，部署k8s集群机器需要满足以下几个条件：</p>
+<ul>
+<li>一台或多台机器，操作系统Linux</li>
+<li>硬件配置：2GB或更多RAM, 2个CPU或更多CPU, 硬盘30GB或更多</li>
+<li>集群中所有机器之间网络互通</li>
+<li>可以访问外网，需要拉取镜像</li>
+<li>禁止swap分区</li>
+</ul>
+<h5 id="系统初始化">系统初始化</h5>
+<ol>
+<li>关闭防火墙</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>关闭selinux</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">永久关闭</span></span><br><span class="line">sed -i &#x27;s/enforcing/disabled/&#x27; /etc/selinux/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">临时关闭</span></span><br><span class="line">setenforce 0</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>关闭swap</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">临时关闭</span></span><br><span class="line">swapoff -a</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">永久关闭</span></span><br><span class="line">sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>设置主机名和hosts本地解析</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置主机名</span></span><br><span class="line">hostnamectl set-hostname k8s-master	# 192.168.179.131</span><br><span class="line">hostnamectl set-hostname k8s-node1	# 192.168.179.132</span><br><span class="line">hostnamectl set-hostname k8s-node2	# 192.168.179.133</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">hosts本地解析(所有节点均配置)</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line"></span><br><span class="line">192.168.179.131 k8s-master</span><br><span class="line">192.168.179.132 k8s-node1</span><br><span class="line">192.168.179.133 k8s-node2</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>将桥接的IPv4流量传递到iptables的链</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">写入（三个节点都需配置）</span></span><br><span class="line">cat &gt; /etc/sysctl.d/k8s.conf &lt;&lt; EOF</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line">vm.swappiness = 0</span><br><span class="line">EOF</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生效</span></span><br><span class="line">sysctl --system</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>时间同步</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install ntpdate -y</span><br><span class="line">ntpdate time.windows.com</span><br></pre></td></tr></table></figure>
+<h4 id="所有节点安装Docker-kubeadm-kubelet">所有节点安装Docker/kubeadm/kubelet</h4>
+<p>由于 Kubernetes CRI (Container Runtime Interface，容器运行时）为Docker，因此需要先安装Docker</p>
+<h5 id="安装Docker">安装Docker</h5>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">卸载旧版本</span></span><br><span class="line"> sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">yum安装 gcc 相关软件，安装yum工具包</span></span><br><span class="line">yum -y install gcc gcc-c++</span><br><span class="line">yum -y install yum-utils</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">设置阿里云的stable 镜像仓库</span></span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装指定版本的Docker</span></span><br><span class="line">yum -y install docker-ce-3:20.10.8-3.el7.x86_64 docker-ce-cli-1:20.10.8-3.el7.x86_64 containerd.io</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动docker并设置开机自启</span></span><br><span class="line">systemctl start docker</span><br><span class="line">systemctl enable docker</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">验证 Docker 是否安装成功：</span></span><br><span class="line">systemctl status docker</span><br><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+<h5 id="设置Docker镜像加速器">设置Docker镜像加速器</h5>
+<p>为了下载各组件时从国内镜像源下载，在每个节点（3台机器）上都需要配置镜像加速器。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;exec-opts&quot;: [&quot;native.cgroupdriver=systemd&quot;],</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://i13m1gh2.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h5 id="添加阿里云的YUM软件源">添加阿里云的YUM软件源</h5>
+<p>由于kubernetes的镜像源在国外，下载软件包较慢或者下载失败，这里在每个节点（3台机器）上都切换成国内的阿里云镜像源。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat &gt; /etc/yum.repos.d/kubernetes.repo &lt;&lt; EOF</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">repo_gpgcheck=0</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>然后</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">清除缓存并更新软件包列表</span></span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br><span class="line">yum list</span><br></pre></td></tr></table></figure>
+<h5 id="安装kubeadm、kubelet和kubectl">安装kubeadm、kubelet和kubectl</h5>
+<p>在每个节点（3台机器）上都需要安装<code>kubeadm</code>、<code>kubelet</code>和<code>kubectl</code>，安装时指定版本为1.21.10。</p>
+<ul>
+<li><code>kubeadm</code>：是官方社区推出的一个用于快速部署kubernetes集群的工具。</li>
+<li><code>kubelet</code>：运行在cluster（集群）所有节点上,负责启动POD和容器。</li>
+<li><code>kubectl</code>：是Kubernetes集群的命令行工具，通过<code>kubectl</code>可以部署和管理应用，查看各种资源，创建，删除和更新组件。</li>
+</ul>
+<ol>
+<li>安装三大组件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install -y kubelet-1.21.10 kubeadm-1.21.10 kubectl-1.21.10</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看安装版本</span></span><br><span class="line">kubelet --version</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>为了实现Docker使用的<code>cgroup driver</code>和kubelet使用的<code>cgroup driver</code>一致，修改&quot;/etc/sysconfig/kubelet&quot;文件为以下内容：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/sysconfig/kubelet</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改为</span></span><br><span class="line">KUBELET_EXTRA_ARGS=&quot;--cgroup-driver=systemd&quot;</span><br><span class="line">KUBE_PROXY_MODE=&quot;ipvs&quot;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>设置为开机自启动</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置开启自启</span></span><br><span class="line">systemctl enable kubelet</span><br></pre></td></tr></table></figure>
+<h4 id="kubernets-集群部署">kubernets 集群部署</h4>
+<h5 id="下载k8s所需镜像">下载k8s所需镜像</h5>
+<p>在每个节点（3台机器）上都安装好k8s集群所需的镜像。</p>
+<ol>
+<li>查看kubernets安装所需镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubeadm config images list</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>下载kubernets安装所需镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-apiserver:v1.21.10</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-controller-manager:v1.21.10</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-scheduler:v1.21.10</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/kube-proxy:v1.21.10</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/pause:3.4.1</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/etcd:3.4.13-0</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/coredns:v1.8.0</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>查看镜像下载情况</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230609124545357.png" alt="image-20230609124545357"></p>
+<h5 id="部署kubernets的Master节点">部署kubernets的Master节点</h5>
+<ol>
+<li>在 192.168.179.131 机器上部署 kubernets 的 master 节点：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubeadm init \</span><br><span class="line">  --apiserver-advertise-address=192.168.179.131 \</span><br><span class="line">  --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers \</span><br><span class="line">  --kubernetes-version=v1.21.10 \</span><br><span class="line">  --service-cidr=10.96.0.0/16 \</span><br><span class="line">  --pod-network-cidr=10.244.0.0/16</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>说明：</p>
+<ul>
+<li><code>apiserver-advertise-address</code> = Master节点的 IP 地址。</li>
+<li><code>image-repository</code> = 容器镜像的仓库地址。</li>
+<li><code>kubernetes-version</code> = 安装的kubernetes版本号。</li>
+<li><code>service-cidr</code> 和 <code>apiserver-advertise-address</code> 、<code>pod-network-cidr</code> 不能在同一个网络范围内。</li>
+<li>不要使用 172.17.0.1/16 网段范围，因为这是 Docker 默认使用的。</li>
+</ul>
+</blockquote>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230609195910983.png" alt="image-20230609195910983"></p>
+<ol start="2">
+<li>拷贝上图中kubectl使用的连接k8s认证文件到默认路径，根据上图的日志提示可知，想要开始使用集群，需要在master节点上执行如下命令：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建目录存放 kubernetes 的配置文件并配置 kubernetes 客户端工具 kubectl</span></span><br><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 <span class="variable">$HOME</span>/.kube/config 文件的权限修改为当前用户</span></span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果是 root 用户，则可以执行以下命令。（和上面的多行命令 二选一即可）</span></span><br><span class="line">export KUBECONFIG=/etc/kubernetes/admin.conf</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>默认的 token 有效期为2小时，当过期之后，该token就不能用了。另外也可以生成一个永不过期的token，命令如下：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">生成token，有效期2小时</span></span><br><span class="line">kubeadm token create --print-join-command</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生成一个永不过期的token</span></span><br><span class="line">kubeadm token create --ttl 0 --print-join-command</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">此时系统自动生成了一个kubeadm <span class="built_in">join</span>命令,这个命令是用来将一个新的节点加入到 Kubernetes 集群中的。说明：</span></span><br><span class="line">kubeadm join 192.168.179.131:6443 				# 集群的 API Server地址</span><br><span class="line">		--token wapiv9.8vj5ycx05i6n46ob \		# 用来认证新节点的凭证</span><br><span class="line">        --discovery-token-ca-cert-hash sha256:e6bfcb09f25204711bf4db9dd08c76d6f0d9e81a6f63977bafe8f599433307a2</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230609200825685.png" alt="image-20230609200825685"></p>
+<h5 id="部署-kubernetes-的-node-节点">部署 kubernetes 的 node 节点</h5>
+<blockquote>
+<p>通过上一小节中 自动生成的<code>kubeadm join</code>命令，将两个node节点加入到kubernetes集群中</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在node节点中执行以下命令：</span></span><br><span class="line">kubeadm join 192.168.179.131:6443 --token m3x57u.xghmq08wk5msknbq --discovery-token-ca-cert-hash sha256:e6bfcb09f25204711bf4db9dd08c76d6f0d9e81a6f63977bafe8f599433307a2</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230609201330594.png" alt="image-20230609201330594"></p>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230609201400275.png" alt="image-20230609201400275"></p>
+<p>然后，在 master 节点中执行以下命令就可以看到集群中的各个节点：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230609201529193.png" alt="image-20230609201529193"></p>
+<h5 id="部署网络插件">部署网络插件</h5>
+<p>Kubernetes本身并没有自己实现容器网络，而是借助CNI标准，通过插件化的方式来集成各种网络插件，实现集群内部网络相互通信。</p>
+<blockquote>
+<p>Kubernetes集群设计了Cluster IP、Node IP、Pod IP三种类型的通信IP：</p>
+<p>（1）Cluster IP是Service对象的IP地址，实现Pod服务的负载均衡，外部网络无法ping通，只在集群内部可以访问使用，是一个虚拟的IP。<br>
+（2）Node IP是集群节点Node的IP地址，可以是物理机的IP（也可能是虚拟机IP）。<br>
+（3）Pod IP是容器组Pod的IP地址，是在容器组初始化过程由Pause容器申请的IP地址。其中Pod IP是容器网络接口CNI与具体的网络插件来实现IP的申请及数据包的转发。</p>
+</blockquote>
+<ol>
+<li>Kubernetes 支持多种网络插件，比如 flannel、calico、canal 等，任选一种安装即可，这里选择 calico。在 master节点（192.168.179.131 ）上执行：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl apply -f https://projectcalico.docs.tigera.io/v3.19/manifests/calico.yaml</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230609202853201.png" alt="image-20230609202853201"></p>
+<ol start="2">
+<li>查看部署CNI网络插件的进度</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl get pods -n kube-system</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">或者</span></span><br><span class="line">watch kubectl get pods -n kube-system</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230610121844490.png" alt="image-20230610121844490"></p>
+<ol start="3">
+<li>在master节点使用kubectl工具查看节点状态，此时节点状态应该都是ready，pod全部running</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230610121915018.png" alt="image-20230610121915018"></p>
+<blockquote>
+<p>到这里，一个一主两从的k8s集群已经搭建好了。</p>
+</blockquote>
+<h5 id="服务部署">服务部署</h5>
+<p>kubernetes集群已经部署完毕，接下来可以部署服务使用了。</p>
+<p>在k8s集群中部署nginx，测试下集群是否正常工作。</p>
+<ol>
+<li>部署nginx：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create deployment nginx --image=nginx</span><br></pre></td></tr></table></figure>
+<p>部署后，可以使用以下命令，查看nginx是否运行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl get pod</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230610123024637.png" alt="image-20230610123024637"></p>
+<ol start="2">
+<li>对外暴露端口</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl expose deployment nginx --port=80 --type=NodePort</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>查看服务状态</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl get pods,svc</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230610130528182.png" alt="image-20230610130528182"></p>
+<blockquote>
+<p>其中，PORT字段<code>80:31234</code>表示nginx所在的pod容器内部的80端口，映射到31234端口。即外网可以通过任意一个节点的IP加上31234端口访问nginx。</p>
+</blockquote>
+<p>如：在浏览器上访问 <a target="_blank" rel="noopener" href="http://192.168.179.131:31234/">http://192.168.179.131:31234/</a> （或 <a target="_blank" rel="noopener" href="http://192.168.179.132:31234/">http://192.168.179.132:31234/</a> 或 <a target="_blank" rel="noopener" href="http://192.168.179.133:31234/%EF%BC%89%E5%8D%B3%E5%8F%AF%E8%AE%BF%E9%97%AE%E5%88%B0nginx">http://192.168.179.133:31234/）即可访问到nginx</a></p>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230610133735209.png" alt="image-20230610133735209"></p>
+<h5 id="配置Node节点也能使用kubectl命令">配置Node节点也能使用kubectl命令</h5>
+<p>【可选】</p>
+<p>默认情况下，只有 Master 节点才有 kubectl 命令，但是有些时候我们也希望在 Node 节点上执行 kubectl 命令。</p>
+<ol>
+<li>在两个node节点（192.168.179.132 和 192.168.179.133）上都创建config文件，执行命令：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -pv ~/.kube</span><br><span class="line">touch ~/.kube/config</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>在node节点已经创建好了config，接下来将master节点的admin.conf文件远程拷贝复制到需要安装的机器。在master节点上执行：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">scp /etc/kubernetes/admin.conf root@k8s-node1:~/.kube/config</span><br><span class="line">scp /etc/kubernetes/admin.conf root@k8s-node2:~/.kube/config</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>此时在两个node节点上验证，已经可以使用kubectl命令了。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230610135144623.png" alt="image-20230610135144623"></p>
+<h3 id="kubernetes-集群搭建（二进制方式）">kubernetes 集群搭建（二进制方式）</h3>
+<p>在开始之前，部署k8s集群机器需要满足以下几个条件：</p>
+<ul>
+<li>一台或多台机器，操作系统Linux</li>
+<li>硬件配置：2GB或更多RAM, 2个CPU或更多CPU, 硬盘30GB或更多</li>
+<li>集群中所有机器之间网络互通</li>
+<li>可以访问外网，需要拉取镜像，如果服务器不能上网，需要提前下载镜像并导入节点</li>
+<li>禁止swap分区</li>
+</ul>
+<h4 id="环境准备-2">环境准备</h4>
+<p>由于没有那么多资源，所以此处只准备两台虚拟机，学习下如何搭建集群即可。</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>IP地址</th>
+<th>hostname</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master</td>
+<td>192.168.179.130</td>
+<td>centos_01</td>
+</tr>
+<tr>
+<td>Node1</td>
+<td>192.168.179.134</td>
+<td>centos_02</td>
+</tr>
+</tbody>
+</table>
+<h5 id="系统初始化-2">系统初始化</h5>
+<ol>
+<li>关闭防火墙</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld</span><br><span class="line"></span><br><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>关闭selinux</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">永久关闭</span></span><br><span class="line">sed -i &#x27;s/enforcing/disabled/&#x27; /etc/selinux/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">临时关闭</span></span><br><span class="line">setenforce 0</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>关闭swap</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">临时关闭</span></span><br><span class="line">swapoff -a</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">永久关闭</span></span><br><span class="line">sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>设置主机名和hosts本地解析</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置主机名</span></span><br><span class="line">hostnamectl set-hostname centos_01	# 192.168.179.130</span><br><span class="line">hostnamectl set-hostname centos_05	# 192.168.179.134</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">hosts本地解析(所有节点均配置)</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line"></span><br><span class="line">192.168.179.130 centos_01</span><br><span class="line">192.168.179.134 centos_05</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>将桥接的IPv4流量传递到iptables的链</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">写入（三个节点都需配置）</span></span><br><span class="line">cat &gt; /etc/sysctl.d/k8s.conf &lt;&lt; EOF</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line">vm.swappiness = 0</span><br><span class="line">EOF</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生效</span></span><br><span class="line">sysctl --system</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>时间同步</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install ntpdate -y</span><br><span class="line">ntpdate time.windows.com</span><br></pre></td></tr></table></figure>
+<h4 id="部署etcd集群">部署etcd集群</h4>
+<p>Etcd是一个分布式键值存储系统，Kubernetes使用Etcd进行数据存储，所以先准备一个Etcd数据库，为解决Etcd单点故障，应采用集群方式部署。</p>
+<ol>
+<li><strong>准备 cfssl 证书生成工具</strong></li>
+</ol>
+<p>cfssl是一个开源的证书管理工具，使用json文件生成证书，相比openssl 更方便使用。找任意一台服务器操作，这里用Master节点。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64</span><br><span class="line">wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64</span><br><span class="line">wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64</span><br><span class="line">chmod +x cfssl_linux-amd64 cfssljson_linux-amd64 cfssl-certinfo_linux-amd64</span><br><span class="line">mv cfssl_linux-amd64 /usr/local/bin/cfssl</span><br><span class="line">mv cfssljson_linux-amd64 /usr/local/bin/cfssljson</span><br><span class="line">mv cfssl-certinfo_linux-amd64 /usr/local/bin/cfssl-certinfo</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><strong>生成Etcd证书</strong></li>
+</ol>
+<p>（1）自签证书颁发机构（CA）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 ~]# mkdir -p ~/TLS/&#123;etcd,k8s&#125;</span><br><span class="line">[root@centos_01 ~]# cd TLS/etcd</span><br></pre></td></tr></table></figure>
+<p>自签CA：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 etcd]# cat &gt; ca-config.json &lt;&lt; EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;signing&quot;: &#123;</span><br><span class="line">    &quot;default&quot;: &#123;</span><br><span class="line">      &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;profiles&quot;: &#123;</span><br><span class="line">      &quot;www&quot;: &#123;</span><br><span class="line">         &quot;expiry&quot;: &quot;87600h&quot;,</span><br><span class="line">         &quot;usages&quot;: [</span><br><span class="line">            &quot;signing&quot;,</span><br><span class="line">            &quot;key encipherment&quot;,</span><br><span class="line">            &quot;server auth&quot;,</span><br><span class="line">            &quot;client auth&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@centos_01 etcd]# cat &gt; ca-csr.json&lt;&lt; EOF</span><br><span class="line">&#123;</span><br><span class="line">    &quot;CN&quot;: &quot;etcd CA&quot;,</span><br><span class="line">    &quot;key&quot;: &#123;</span><br><span class="line">        &quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">        &quot;size&quot;: 2048</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;names&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">            &quot;L&quot;: &quot;Beijing&quot;,</span><br><span class="line">            &quot;ST&quot;: &quot;Beijing&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>生成证书：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 etcd]# cfssl gencert -initca ca-csr.json | cfssljson -bare ca -</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230612164824985.png" alt="image-20230612164824985"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 etcd]# ls *pem</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230612164855603.png" alt="image-20230612164855603"></p>
+<p>（2）使用自签 CA 签发 Etcd HTTPS 证书</p>
+<p>创建证书申请文件：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 etcd]# cat &gt; server-csr.json &lt;&lt; EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;CN&quot;: &quot;etcd&quot;,</span><br><span class="line">  &quot;hosts&quot;: [</span><br><span class="line">    &quot;192.168.179.130&quot;,      </span><br><span class="line">    &quot;192.168.179.134&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;key&quot;: &#123;</span><br><span class="line">    &quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">    &quot;size&quot;: 2048</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;names&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">      &quot;L&quot;: &quot;BeiJing&quot;,</span><br><span class="line">      &quot;ST&quot;: &quot;BeiJing&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>注：上述文件 hosts字段中 IP为所有 etcd节点的集群内部通信 IP，一个都不能少！为了方便后期扩容，也可以多写几个预留的 IP。</p>
+<p>生成证书：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 etcd]# cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=www server-csr.json | cfssljson -bare server</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230613100315610.png" alt="image-20230613100315610"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">以下文件 就是相关的证书文件</span></span><br><span class="line">[root@centos_01 etcd]# ls server*.pem</span><br><span class="line">server-key.pem  server.pem</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><strong>部署Etcd集群</strong></li>
+</ol>
+<p>（1）创建工作目录并下载二进制包</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 etcd]# cd ~</span><br><span class="line">[root@centos_01 ~]# wget https://github.com/etcd-io/etcd/releases/download/v3.4.9/etcd-v3.4.9-linux-amd64.tar.gz</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">bin里面存放的是可执行文件,cfg存放配置文件,ssl存放证书</span></span><br><span class="line">[root@centos_01 ~]# mkdir /opt/etcd/&#123;bin,cfg,ssl&#125; -p</span><br><span class="line">[root@centos_01 ~]# tar zxvf etcd-v3.4.9-linux-amd64.tar.gz</span><br><span class="line">[root@centos_01 ~]# mv etcd-v3.4.9-linux-amd64/&#123;etcd,etcdctl&#125; /opt/etcd/bin/</span><br></pre></td></tr></table></figure>
+<p>（2）创建etcd配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 ~]# cat &gt; /opt/etcd/cfg/etcd.conf &lt;&lt; EOF</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">[Member]</span></span><br><span class="line">ETCD_NAME=&quot;etcd-1&quot;</span><br><span class="line">ETCD_DATA_DIR=&quot;/var/lib/etcd/default.etcd&quot;</span><br><span class="line">ETCD_LISTEN_PEER_URLS=&quot;https://192.168.179.130:2380&quot; </span><br><span class="line">ETCD_LISTEN_CLIENT_URLS=&quot;https://192.168.179.130:2379&quot; </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">[Clustering]</span></span><br><span class="line">ETCD_INITIAL_ADVERTISE_PEER_URLS=&quot;https://192.168.179.130:2380&quot;</span><br><span class="line">ETCD_ADVERTISE_CLIENT_URLS=&quot;https://192.168.179.130:2379&quot;</span><br><span class="line">ETCD_INITIAL_CLUSTER=&quot;etcd-1=https://192.168.179.130:2380,etcd-2=https://192.168.179.134:2380&quot;</span><br><span class="line">ETCD_INITIAL_CLUSTER_TOKEN=&quot;etcd-cluster&quot; </span><br><span class="line">ETCD_INITIAL_CLUSTER_STATE=&quot;new&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>配置文件说明：</p>
+<blockquote>
+<p><code>ETCD_NAME</code>：节点名称，集群中唯一</p>
+<p><code>ETCD_DATA_DIR</code>：数据目录</p>
+<p><code>ETCD_LISTEN_PEER_URLS</code>：集群通信监听地址</p>
+<p><code>ETCD_LISTEN_CLIENT_URLS</code>：客户端访问监听地址</p>
+<p><code>ETCD_INITIAL_ADVERTISE_PEER_URLS</code>：集群通告地址</p>
+<p><code>ETCD_ADVERTISE_CLIENT_URLS</code>：客户端通告地址</p>
+<p><code>ETCD_INITIAL_CLUSTER</code>：集群节点地址</p>
+<p><code>ETCD_INITIAL_CLUSTER_TOKEN</code>：集群 Token</p>
+<p><code>ETCD_INITIAL_CLUSTER_STATE</code>：加入集群的当前状态，new是新集群，existing表示加入已有集群</p>
+</blockquote>
+<p>（3）systemd管理etcd</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 ~]# cat &gt; /usr/lib/systemd/system/etcd.service &lt;&lt; EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=Etcd Server</span><br><span class="line">After=network.target</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">EnvironmentFile=/opt/etcd/cfg/etcd.conf</span><br><span class="line">ExecStart=/opt/etcd/bin/etcd \</span><br><span class="line">    --cert-file=/opt/etcd/ssl/server.pem \</span><br><span class="line">    --key-file=/opt/etcd/ssl/server-key.pem \</span><br><span class="line">    --peer-cert-file=/opt/etcd/ssl/server.pem \</span><br><span class="line">    --peer-key-file=/opt/etcd/ssl/server-key.pem \</span><br><span class="line">    --trusted-ca-file=/opt/etcd/ssl/ca.pem \</span><br><span class="line">    --peer-trusted-ca-file=/opt/etcd/ssl/ca.pem \</span><br><span class="line">    --logger=zap</span><br><span class="line">Restart=on-failure</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>（4）拷贝刚才生成的证书</p>
+<p>把刚才生成的证书拷贝到配置文件中的路径：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@centos_01 ~]# cp ~/TLS/etcd/ca*pem ~/TLS/etcd/server*pem /opt/etcd/ssl/</span><br></pre></td></tr></table></figure>
+<p>（5）将上面<code>centos_01</code>所有生成的文件拷贝到其他节点</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">拷贝到centos_05</span></span><br><span class="line">scp -r /opt/etcd/ root@centos_05:/opt/</span><br><span class="line">scp /usr/lib/systemd/system/etcd.service root@centos_05:/usr/lib/systemd/system/</span><br></pre></td></tr></table></figure>
+<p><img src="F:%5Cmyblog%5Cimages%5Cimage-20230615105020854.png" alt="image-20230615105020854"></p>
+<p>然后再centos_05上修改<code>etcd.conf</code>配置文件中的节点名称和当前服务器IP：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="安装Docker-2">安装Docker</h4>
+<h4 id="部署master组件">部署master组件</h4>
+<h4 id="部署node组件">部署node组件</h4>
+<h4 id="部署集群网络">部署集群网络</h4>
+<h2 id="k8s核心技术">k8s核心技术</h2>
+<h2 id="部署性能监控平台">部署性能监控平台</h2>
+<h2 id="搭建k8s高可用集群">搭建k8s高可用集群</h2>
+<h2 id="k8s部署项目">k8s部署项目</h2>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://hugh-98.github.io">Hugh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://hugh-98.github.io/2023/06/06/Kubernetes%E5%85%A5%E9%97%A8/">https://hugh-98.github.io/2023/06/06/Kubernetes入门/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://hugh-98.github.io" target="_blank">Hugh的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/k8s/">k8s</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/07/05/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" title="基础算法.md"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基础算法.md</div></div></a></div><div class="next-post pull-right"><a href="/2023/05/09/Linux%E4%B8%89%E5%89%91%E5%AE%A2/" title="Linux三剑客"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linux三剑客</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Hugh</div><div class="author-info__description">Life is like a box of chocolates, you never know what you're going to get.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/hugh-98"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">若在文章中无法显示图片，则需先用科学上网后才能看到。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#k8s%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">k8s简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#k8s%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">k8s基本介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#k8s%E5%8A%9F%E8%83%BD%E5%92%8C%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">k8s功能和架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#k8s%E4%B8%AD%E7%9A%84%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.</span> <span class="toc-text">k8s中的核心概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k8s%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA"><span class="toc-number">2.</span> <span class="toc-text">k8s集群搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BAk8s%E7%8E%AF%E5%A2%83%E7%9A%84%E5%B9%B3%E5%8F%B0%E8%A7%84%E5%88%92"><span class="toc-number">2.1.</span> <span class="toc-text">搭建k8s环境的平台规划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kubeadm%E6%90%AD%E5%BB%BAk8s%E9%9B%86%E7%BE%A4"><span class="toc-number">2.2.</span> <span class="toc-text">kubeadm搭建k8s集群</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">2.2.1.</span> <span class="toc-text">环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">系统初始化</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85Docker-kubeadm-kubelet"><span class="toc-number">2.2.2.</span> <span class="toc-text">所有节点安装Docker&#x2F;kubeadm&#x2F;kubelet</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Docker"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">安装Docker</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEDocker%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">设置Docker镜像加速器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E9%98%BF%E9%87%8C%E4%BA%91%E7%9A%84YUM%E8%BD%AF%E4%BB%B6%E6%BA%90"><span class="toc-number">2.2.2.3.</span> <span class="toc-text">添加阿里云的YUM软件源</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%89%E8%A3%85kubeadm%E3%80%81kubelet%E5%92%8Ckubectl"><span class="toc-number">2.2.2.4.</span> <span class="toc-text">安装kubeadm、kubelet和kubectl</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kubernets-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2"><span class="toc-number">2.2.3.</span> <span class="toc-text">kubernets 集群部署</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDk8s%E6%89%80%E9%9C%80%E9%95%9C%E5%83%8F"><span class="toc-number">2.2.3.1.</span> <span class="toc-text">下载k8s所需镜像</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2kubernets%E7%9A%84Master%E8%8A%82%E7%82%B9"><span class="toc-number">2.2.3.2.</span> <span class="toc-text">部署kubernets的Master节点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2-kubernetes-%E7%9A%84-node-%E8%8A%82%E7%82%B9"><span class="toc-number">2.2.3.3.</span> <span class="toc-text">部署 kubernetes 的 node 节点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%BD%91%E7%BB%9C%E6%8F%92%E4%BB%B6"><span class="toc-number">2.2.3.4.</span> <span class="toc-text">部署网络插件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2"><span class="toc-number">2.2.3.5.</span> <span class="toc-text">服务部署</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%85%8D%E7%BD%AENode%E8%8A%82%E7%82%B9%E4%B9%9F%E8%83%BD%E4%BD%BF%E7%94%A8kubectl%E5%91%BD%E4%BB%A4"><span class="toc-number">2.2.3.6.</span> <span class="toc-text">配置Node节点也能使用kubectl命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kubernetes-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">kubernetes 集群搭建（二进制方式）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87-2"><span class="toc-number">2.3.1.</span> <span class="toc-text">环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%88%9D%E5%A7%8B%E5%8C%96-2"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">系统初始化</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2etcd%E9%9B%86%E7%BE%A4"><span class="toc-number">2.3.2.</span> <span class="toc-text">部署etcd集群</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Docker-2"><span class="toc-number">2.3.3.</span> <span class="toc-text">安装Docker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2master%E7%BB%84%E4%BB%B6"><span class="toc-number">2.3.4.</span> <span class="toc-text">部署master组件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2node%E7%BB%84%E4%BB%B6"><span class="toc-number">2.3.5.</span> <span class="toc-text">部署node组件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E9%9B%86%E7%BE%A4%E7%BD%91%E7%BB%9C"><span class="toc-number">2.3.6.</span> <span class="toc-text">部署集群网络</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k8s%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF"><span class="toc-number">3.</span> <span class="toc-text">k8s核心技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E5%B9%B3%E5%8F%B0"><span class="toc-number">4.</span> <span class="toc-text">部署性能监控平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%90%AD%E5%BB%BAk8s%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4"><span class="toc-number">5.</span> <span class="toc-text">搭建k8s高可用集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#k8s%E9%83%A8%E7%BD%B2%E9%A1%B9%E7%9B%AE"><span class="toc-number">6.</span> <span class="toc-text">k8s部署项目</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/07/05/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/" title="基础算法.md">基础算法.md</a><time datetime="2023-07-05T13:43:30.000Z" title="发表于 2023-07-05 21:43:30">2023-07-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/06/06/Kubernetes%E5%85%A5%E9%97%A8/" title="Kubernetes入门（k8s）">Kubernetes入门（k8s）</a><time datetime="2023-06-06T12:22:30.000Z" title="发表于 2023-06-06 20:22:30">2023-06-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/09/Linux%E4%B8%89%E5%89%91%E5%AE%A2/" title="Linux三剑客">Linux三剑客</a><time datetime="2023-05-09T04:10:52.000Z" title="发表于 2023-05-09 12:10:52">2023-05-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/03/Redis/" title="Redis入门">Redis入门</a><time datetime="2023-05-03T02:07:46.000Z" title="发表于 2023-05-03 10:07:46">2023-05-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/27/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Git常用命令">Git常用命令</a><time datetime="2023-04-27T05:34:04.000Z" title="发表于 2023-04-27 13:34:04">2023-04-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2024 By Hugh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://hugh-98.github.io/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'mOxPmpzRdaSEBRH4FPLh3IOA-gzGzoHsz',
+      appKey: 'KXhA9ey1dBoGtsiuDmz48WWk',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></body></html>
